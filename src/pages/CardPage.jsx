@@ -17,6 +17,9 @@ const CardPage = () => {
   const handleConnexionClick = () => {
     navigate('/connexion');
   };
+  const handleInscriptionClick = () => {
+    navigate('/inscription');
+  };
 
   return (
     <div>
@@ -43,6 +46,8 @@ const CardPage = () => {
       <h2>Card Images:</h2>
       <img src={cardData.card_images && cardData.card_images[0].image_url} alt={cardData.name} />
       <button onClick={handleConnexionClick}>connexion</button>
+      <button onClick={handleInscriptionClick}>inscription</button>
+
 
     </div>
   );

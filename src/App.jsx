@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom/dist";
-import router from "./components/AppRouter";
+import router from "./router";
 
 const App = () => {
   return(

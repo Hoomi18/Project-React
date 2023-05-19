@@ -2,41 +2,33 @@ import React, { useState } from 'react';
 import styles from '../LoginForm.module.css';
 import db from '../../firebase';
 import {
-   getDocs,where,query, collection 
+  collection,addDoc
 } from 'firebase/firestore';
 
-const Connexion = () => {
+const Inscription = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [pseudo, setPseudo] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Effectuez ici votre logique de connexion, par exemple, en envoyant les données au backend
     console.log('Email:', email);
     console.log('Password:', password);
+    console.log('Pseudo:', pseudo);
     
     // Réinitialiser les champs du formulaire
     setEmail('');
     setPassword('');
   };
 
-  const login = async () => {
-    //fait une requête firestore pour voir si l'email et le mot de passe sont dans la base de données
-    const noteRef = collection(db, "User");
-
-    const q = query(noteRef, where("Email", "==", email), where( "Password", "==", password));
-    const querySnapshot = await getDocs(q);
-
-
-    
-    
-    if (querySnapshot.size > 0 ) {
-        console.log("connexion réussie");
-        console.log(querySnapshot.docs[0].id);
-      }
-      else{
-        console.log("mot de passe ou email incorrect");
-      }
+  const addUser = async () => {
+    await addDoc(collection(db, "User"), {
+        Email: email,
+        Password: password,
+        Name: pseudo
+      });
+   
  }
     
 
@@ -45,6 +37,16 @@ const Connexion = () => {
   return (
     
     <form onSubmit={handleSubmit} className={styles.email}>
+      <div>
+        <label htmlFor="pseudo">Pseudo:</label>
+        <input
+          type="string"
+          id="pseudo"
+          value={pseudo}
+          onChange={(e) => setPseudo(e.target.value)}
+          required
+        />
+      </div>
       <div>
         <label htmlFor="email">Email:</label>
         <input
@@ -65,9 +67,10 @@ const Connexion = () => {
           required
         />
       </div>
-      <button type="submit" onClick={login}>Connexion</button>
+      
+      <button type="submit" onClick={addUser}>Connexion</button>
     </form>
   );
 };
 
-export default Connexion;
+export default Inscription;
