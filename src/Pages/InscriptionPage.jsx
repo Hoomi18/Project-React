@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import styles from '../LoginForm.module.css';
 import db from '../../firebase';
 import {
-  collection,addDoc
+  collection, addDoc
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom/dist';
 
 const Inscription = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [pseudo, setPseudo] = useState('');
@@ -16,7 +18,7 @@ const Inscription = () => {
     console.log('Email:', email);
     console.log('Password:', password);
     console.log('Pseudo:', pseudo);
-    
+
     // Réinitialiser les champs du formulaire
     setEmail('');
     setPassword('');
@@ -24,18 +26,20 @@ const Inscription = () => {
 
   const addUser = async () => {
     await addDoc(collection(db, "User"), {
-        Email: email,
-        Password: password,
-        Name: pseudo
-      });
-   
- }
-    
+      Email: email,
+      Password: password,
+      Name: pseudo
+    });
+
+  };
+  const handleConnexionClick = () => {
+    navigate('/');
+  };
 
 
 
   return (
-    
+
     <form onSubmit={handleSubmit} className={styles.email}>
       <div>
         <label htmlFor="pseudo">Pseudo:</label>
@@ -67,8 +71,10 @@ const Inscription = () => {
           required
         />
       </div>
-      
-      <button type="submit" onClick={addUser}>Connexion</button>
+
+      <button type="submit" onClick={addUser}>Inscription</button>
+      <button type="submit" onClick={handleConnexionClick}>Se connecter</button>
+
     </form>
   );
 };

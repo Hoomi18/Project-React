@@ -4,8 +4,10 @@ import db from '../../firebase';
 import {
    getDocs,where,query, collection 
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom/dist';
 
 const Connexion = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,7 +21,9 @@ const Connexion = () => {
     setEmail('');
     setPassword('');
   };
-
+  const handleInscriptionClick = () => {
+    navigate('/inscription');
+  };
   const login = async () => {
     //fait une requête firestore pour voir si l'email et le mot de passe sont dans la base de données
     const noteRef = collection(db, "User");
@@ -33,6 +37,10 @@ const Connexion = () => {
     if (querySnapshot.size > 0 ) {
         console.log("connexion réussie");
         console.log(querySnapshot.docs[0].id);
+        const userId = querySnapshot.docs[0].id;
+        localStorage.setItem('userId', userId);
+        navigate('/card')
+
       }
       else{
         console.log("mot de passe ou email incorrect");
@@ -66,6 +74,8 @@ const Connexion = () => {
         />
       </div>
       <button type="submit" onClick={login}>Connexion</button>
+      <button onClick={handleInscriptionClick}>inscription</button>
+
     </form>
   );
 };
